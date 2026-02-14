@@ -27,6 +27,10 @@ router.get('/adminLogin', (req, res) => {
   res.render('adminLogin');
 });
 
+router.get('/adminRegister', (req, res) => {
+  res.render('adminRegistro');
+});
+
 router.get('/admin', ensureAdmin, (req, res) => {
   // Load productos for admin view
   (async () => {
