@@ -1,0 +1,21 @@
+<nav style="background:#222;color:#fff;padding:10px;display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:12px">
+    <a href="/" style="color:#fff;text-decoration:none;font-weight:bold;font-size:1.1rem">Mi Tienda</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <% if (user) { %>
+      <span style="color:#fff">Hola, <%= user.nombre %></span>
+    <% } %>
+    <a id="cartButton" href="/carrito" style="color:#fff;text-decoration:none;position:relative;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:4px">
+      Carrito
+      <span id="cartCountBadge" style="background:#e74c3c;color:#fff;border-radius:50%;padding:2px 7px;font-size:0.9rem;position:absolute;top:-6px;right:-8px"><%= cartCount || 0 %></span>
+    </a>
+    <% if (user) { %>
+      <a href="/logout" style="color:#fff;text-decoration:none;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:4px">Cerrar sesión</a>
+    <% } else { %>
+      <a href="/login" style="color:#fff;text-decoration:none;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:4px">Iniciar sesión</a>
+    <% } %>
+  </div>
+</nav>
+
+<div id="cart-toast" style="position:fixed;top:70px;right:20px;background:#333;color:#fff;padding:8px 12px;border-radius:6px;display:none;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>

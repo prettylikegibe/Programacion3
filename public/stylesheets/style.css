@@ -1,0 +1,216 @@
+/* --- Variables de Diseño --- */
+:root {
+    --primario: #2563eb;
+    --primario-hover: #1d4ed8;
+    --secundario: #64748b;
+    --exito: #22c55e;
+    --peligro: #ef4444;
+    --fondo: #f8fafc;
+    --blanco: #ffffff;
+    --texto: #1e293b;
+    --borde: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius: 12px;
+}
+
+/* --- Reseteo y Base --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--fondo);
+    color: var(--texto);
+    line-height: 1.6;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+}
+
+/* --- Contenedores Generales --- */
+.contenedor {
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+h2, h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primario);
+}
+
+/* --- Formularios (Login y Registro) --- */
+.contenedorForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.caja-formulario {
+    background: var(--blanco);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+input {
+    padding: 0.8rem;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primario);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+button {
+    padding: 0.8rem;
+    margin:10px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primario);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: var(--primario-hover);
+}
+
+.error {
+    background: #fee2e2;
+    color: var(--peligro);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* --- Catálogo y Listado de Productos --- */
+.productos ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 0;
+}
+
+.productos li {
+    background: var(--blanco);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--borde);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.productos li:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.productos li strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* --- Admin CRUD --- */
+.crud {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: var(--blanco);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* --- Carrito (Tabla) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--blanco);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--borde);
+}
+
+th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+
+/* --- Buscador --- */
+.buscador {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#searchInput {
+    flex-grow: 1;
+}
+
+/* --- Toast Notification --- */
+#cart-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--texto);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .buscador input {
+        width: 100% !important;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}

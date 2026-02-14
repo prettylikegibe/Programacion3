@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <main>
+    <%- include('partials/navbar') %>
+    <div class="contenedor">
+      <h2>Carrito de <%= user ? user.nombre : 'Invitado' %></h2>
+      <% if (!items || items.length === 0) { %>
+        <p>Tu carrito está vacío.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th>Acción</th></tr>
+          </thead>
+          <tbody>
+            <% items.forEach(function(it){ %>
+              <tr>
+                <td><%= it.nombre %></td>
+                <td>$<%= it.precio.toFixed(2) %></td>
+                <td><%= it.cantidad %></td>
+                <td>$<%= it.subtotal.toFixed(2) %></td>
+                <td>
+                  <form class="remove-from-cart" action="/carrito/remove" method="post" style="display:inline">
+                    <input type="hidden" name="id" value="<%= it.id %>">
+                    <button type="submit">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <h3>Total: $<%= total.toFixed(2) %></h3>
+        <form id="clearCartForm" action="/carrito/clear" method="post">
+          <button type="submit">Vaciar carrito</button>
+        </form>
+      <% } %>
+
+      <button onclick="window.location.href='/usuario'">Volver al catálogo</button>
+    </div>
+  </main>
+  <script>
+    // AJAX remove
+    document.querySelectorAll('form.remove-from-cart').forEach(form => {
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const fd = new FormData(form);
+        const body = {};
+        fd.forEach((v,k) => { body[k] = v; });
+        fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'X-Requested-With':'XMLHttpRequest', 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).then(r => r.json()).then(data => {
+          // reload page to reflect changes (could also mutate DOM)
+          if (data && typeof data.count !== 'undefined') {
+            const badge = document.getElementById('cartCountBadge'); if (badge) badge.textContent = data.count;
+          }
+          window.location.reload();
+        }).catch(err=>{console.error(err);});
+      });
+    });
+
+    // AJAX clear
+    const clearForm = document.getElementById('clearCartForm');
+    if (clearForm) {
+      clearForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        fetch(clearForm.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'X-Requested-With':'XMLHttpRequest' }
+        }).then(r => r.json()).then(data => {
+          const badge = document.getElementById('cartCountBadge'); if (badge) badge.textContent = (data && data.count) ? data.count : 0;
+          window.location.reload();
+        }).catch(err=>{console.error(err);});
+      });
+    }
+  </script>
+</body>
+</html>

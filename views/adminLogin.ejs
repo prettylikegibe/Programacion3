@@ -1,0 +1,25 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicia Sesión</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <main>
+     <div class="contenedorForm">
+            <div class="caja-formulario active" id="formulario-login">
+                <h2>Iniciar Sesión como administrador</h2>
+                <% if (locals.error) { %>
+                    <p class="error"><%= error %></p>
+                <% } %>
+                <form action="/adminLogin" method="post">
+                    <input type="email" name="email" placeholder="Correo Electronico" required>
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <button type="submit" name="adminLogin">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </main>  
+</body>
+</html>

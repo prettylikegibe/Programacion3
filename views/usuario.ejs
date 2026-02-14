@@ -1,0 +1,96 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <main>
+        <%- include('partials/navbar') %>
+    <div class="contenedor">
+            <h2>Bienvenido, <%= user.nombre %>!</h2>
+            <p>Esta es tu vista de usuario.</p>
+        </div>
+
+        <section class="catalogo">
+            <h3>Catálogo</h3>
+
+            <div class="buscador" style="margin-bottom:12px">
+                <input id="searchInput" type="search" placeholder="Buscar productos..." value="<%= (filters && filters.nombre) ? filters.nombre : '' %>" style="width:40%">
+                <button id="searchBtn">Buscar</button>
+                <button id="clearBtn">Limpiar</button>
+
+                <div style="margin-top:8px">
+                    <label>Precio min: <input id="precioMin" type="number" step="0.01" value="<%= (filters && filters.precioMin) ? filters.precioMin : '' %>"></label>
+                    <label>Precio max: <input id="precioMax" type="number" step="0.01" value="<%= (filters && filters.precioMax) ? filters.precioMax : '' %>"></label>
+                    <label>Stock min: <input id="stockMin" type="number" value="<%= (filters && filters.stockMin) ? filters.stockMin : '' %>"></label>
+                    <label>Stock max: <input id="stockMax" type="number" value="<%= (filters && filters.stockMax) ? filters.stockMax : '' %>"></label>
+                </div>
+            </div>
+
+            <div class="productos">
+                <% if (!productos || productos.length === 0) { %>
+                    <p>No hay productos para mostrar.</p>
+                <% } else { %>
+                    <ul>
+                    <% productos.forEach(function(p) { %>
+                        <li>
+                            <strong><%= p.nombre %></strong>
+                            <div>Código: <%= p.codigo %></div>
+                            <div>Descripción: <%= p.descripcion %></div>
+                            <div>Precio: $<%= p.precio %></div>
+                            <div>Stock: <%= p.stock %></div>
+                            <form action="/carrito/add" method="post" style="margin-top:8px">
+                                <input type="hidden" name="id" value="<%= p.id %>">
+                                <label>Cantidad: <input type="number" name="cantidad" value="1" min="1" style="width:60px"></label>
+                                <button type="submit">Agregar al carrito</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                    </ul>
+                <% } %>
+            </div>
+        </section>
+
+        <script>
+            function buildQuery() {
+                const params = [];
+                const q = document.getElementById('searchInput').value.trim();
+                if (q) params.push('nombre=' + encodeURIComponent(q));
+                const pMin = document.getElementById('precioMin').value;
+                const pMax = document.getElementById('precioMax').value;
+                const sMin = document.getElementById('stockMin').value;
+                const sMax = document.getElementById('stockMax').value;
+                if (pMin) params.push('precioMin=' + encodeURIComponent(pMin));
+                if (pMax) params.push('precioMax=' + encodeURIComponent(pMax));
+                if (sMin) params.push('stockMin=' + encodeURIComponent(sMin));
+                if (sMax) params.push('stockMax=' + encodeURIComponent(sMax));
+                return params.length ? '?' + params.join('&') : '';
+            }
+
+            document.getElementById('searchBtn').addEventListener('click', function(e){
+                e.preventDefault();
+                window.location = '/usuario' + buildQuery();
+            });
+
+            document.getElementById('searchInput').addEventListener('keypress', function(e){
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    window.location = '/usuario' + buildQuery();
+                }
+            });
+
+            document.getElementById('clearBtn').addEventListener('click', function(e){
+                e.preventDefault();
+                document.getElementById('searchInput').value = '';
+                document.getElementById('precioMin').value = '';
+                document.getElementById('precioMax').value = '';
+                document.getElementById('stockMin').value = '';
+                document.getElementById('stockMax').value = '';
+                window.location = '/usuario';
+            });
+        </script>
+    </main>
+</body>
+</html>
